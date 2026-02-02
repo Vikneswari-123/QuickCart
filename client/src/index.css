@@ -1,0 +1,43 @@
+@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --color-primary: #4fbf8b;
+    --color-primary-dull: #44ae7c;
+  }
+}
+
+*{
+  font-family: "outfit",sans-serif;
+  
+}
+
+.login-button {
+  background-color: var(--color-primary);
+  border-radius: 10px;
+  width: 100px;
+  cursor: pointer;
+}
+
+.login-button:hover {
+  background-color: var(--color-primary-dull);
+}
+
+.text-green-primary{
+  color:#4fbf8b;
+}
+
+.bg-primary{
+  background-color: #4fbf8b;
+}
+
+.bg-primary-dull{
+  background-color: #44ae7c;
+}
+
+.no-scrollbar::-webkit-scrollbar{
+  display: none;
+}
