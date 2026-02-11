@@ -16,7 +16,7 @@ import SellerLogin from './components/seller/SellerLogin'
 import SellerLayout from './pages/seller/SellerLayout'
 import AddProduct from './pages/seller/AddProduct'
 import ProductList from './pages/seller/ProductList'
-import Orders from './pages/seller/orders'
+import Orders from './pages/seller/Orders'
 import Loading from './components/Loading'
 
 
