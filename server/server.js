@@ -18,14 +18,18 @@ const port = process.env.PORT || 4000;
 await connectDB()
 await connectCloudinary()
 
-const allowedOrigins = ['http://localhost:5173']
+const allowedOrigins = ['http://localhost:5173',
+   process.env.FRONTEND_URL
+]
 
 app.post('/stripe', express.raw({type: 'application/json'}), stripeWebhooks)
 
 // Middleware configuration
+app.use(cors({origin: ["http://localhost:5173",
+    "https://frontend-quickcart.vercel.app"], credentials: true}));
 app.use(express.json());
 app.use(cookieParser());
-app.use(cors({origin: allowedOrigins, credentials: true}));
+
 
 app.get('/', (req, res)=> res.send("API is Working"));
 
