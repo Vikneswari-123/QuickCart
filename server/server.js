@@ -15,20 +15,41 @@ import { stripeWebhooks } from './controllers/orderController.js';
 const app = express();
 const port = process.env.PORT || 4000;
 
-await connectDB()
-await connectCloudinary()
+connectDB()
+connectCloudinary()
 
-const allowedOrigins = ['http://localhost:5173',
-   process.env.FRONTEND_URL
-]
+const allowedOrigins = [
+  'http://localhost:5173',
+  'http://127.0.0.1:5173',
+  'https://frontend-quickcart.vercel.app',
+  'https://quickcart-frontend-gules.vercel.app' // Add any other Vercel URLs you see in your dashboard
+];
 
-app.post('/stripe', express.raw({type: 'application/json'}), stripeWebhooks)
+app.use(cors({
+  origin: function (origin, callback) {
+    // Allow requests with no origin (like mobile apps or curl)
+    if (!origin) return callback(null, true);
+    
+    // Check if the origin is in our list or is a vercel subdomain
+    const isVercel = origin.endsWith('.vercel.app');
+    
+    if (allowedOrigins.includes(origin) || isVercel) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization", "Cookie"]
+}));
+app.post('/api/order/stripe', express.raw({type: 'application/json'}), stripeWebhooks)
 
 // Middleware configuration
-app.use(cors({origin: ["http://localhost:5173",
-    "https://frontend-quickcart.vercel.app"], credentials: true}));
+
 app.use(express.json());
 app.use(cookieParser());
+
 
 
 app.get('/', (req, res)=> res.send("API is Working"));
@@ -45,7 +66,10 @@ app.use('/api/address',addressRouter)
 
 app.use('/api/order',orderRouter)
 
-app.listen(port, ()=>{
-    console.log(`Server is running on http://localhost:${port}`)
-})
+if (process.env.NODE_ENV !== 'production') {
+  app.listen(port, () => {
+    console.log(`Server is running on http://localhost:${port}`);
+  });
+}
 
+export default app;
