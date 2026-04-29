@@ -22,17 +22,13 @@ const allowedOrigins = [
   'http://localhost:5173',
   'http://127.0.0.1:5173',
   'https://frontend-quickcart.vercel.app',
-  'https://quickcart-frontend-gules.vercel.app' // Add any other Vercel URLs you see in your dashboard
+  'https://quickcart-frontend-gules.vercel.app',
 ];
 
 app.use(cors({
   origin: function (origin, callback) {
-    // Allow requests with no origin (like mobile apps or curl)
     if (!origin) return callback(null, true);
-    
-    // Check if the origin is in our list or is a vercel subdomain
-    const isVercel = origin.endsWith('.vercel.app');
-    
+    const isVercel = origin.endsWith('.vercel.app');  // ← fixed
     if (allowedOrigins.includes(origin) || isVercel) {
       callback(null, true);
     } else {
@@ -40,31 +36,25 @@ app.use(cors({
     }
   },
   credentials: true,
-  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
   allowedHeaders: ["Content-Type", "Authorization", "Cookie"]
 }));
+
+// Stripe webhook - must be before express.json()
 app.post('/api/order/stripe', express.raw({type: 'application/json'}), stripeWebhooks)
 
-// Middleware configuration
-
+// Middleware
 app.use(express.json());
 app.use(cookieParser());
 
-
-
-app.get('/', (req, res)=> res.send("API is Working"));
-
-app.use('/api/user',userRouter)
-
-app.use('/api/seller',sellerRouter)
-
-app.use('/api/product',productRouter)
-
-app.use('/api/cart',cartRouter)
-
-app.use('/api/address',addressRouter)
-
-app.use('/api/order',orderRouter)
+// Routes
+app.get('/', (req, res) => res.send("API is Working"));
+app.use('/api/user', userRouter)
+app.use('/api/seller', sellerRouter)
+app.use('/api/product', productRouter)
+app.use('/api/cart', cartRouter)
+app.use('/api/address', addressRouter)
+app.use('/api/order', orderRouter)
 
 if (process.env.NODE_ENV !== 'production') {
   app.listen(port, () => {
