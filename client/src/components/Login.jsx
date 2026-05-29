@@ -18,6 +18,7 @@ const Login = () => {
             name, email, password
         });
         if (data.success){
+            localStorage.setItem('token', data.token)
             navigate('/')
             setUser(data.user)
             setShowUserLogin(false)
