@@ -70,12 +70,16 @@ const fetchUser = async ()=>{
        }
 
 // Add Product to Cart       
-const addToCart = (itemId)=>{
+const addToCart = (itemId) => {
+    if (!user) {
+        setShowUserLogin(true); // shows login popup
+        toast.error('Please login to add items to cart');
+        return;
+    }
     let cartData = structuredClone(cartItems);
-
-    if(cartData[itemId]){
+    if (cartData[itemId]) {
         cartData[itemId] += 1;
-    }else {
+    } else {
         cartData[itemId] = 1;
     }
     setCartItems(cartData);
