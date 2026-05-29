@@ -16,6 +16,9 @@ import aiRoutes from './routes/aiRoutes.js';
 const app = express();
 const port = process.env.PORT || 4000;
 
+// Tell Express to trust Vercel's proxy setup so secure HTTPS cookies work
+app.set('trust proxy', 1);
+
 try {
   await connectDB()
   await connectCloudinary()
@@ -34,7 +37,7 @@ const allowedOrigins = [
 app.use(cors({
   origin: function (origin, callback) {
     if (!origin) return callback(null, true);
-    const isVercel = origin.endsWith('.vercel.app');  // ← fixed
+    const isVercel = origin.endsWith('.vercel.app');  
     if (allowedOrigins.includes(origin) || isVercel) {
       callback(null, true);
     } else {

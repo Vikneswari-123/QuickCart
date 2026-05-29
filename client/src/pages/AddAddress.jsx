@@ -60,7 +60,7 @@ const AddAddress = () => {
      if (!user) {
     navigate('/cart')
   }
-}, [])
+}, [user, navigate])
 
   return (
     <div className='mt-16 pb-16'>
