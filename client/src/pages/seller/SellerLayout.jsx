@@ -7,7 +7,7 @@ import toast from "react-hot-toast";
 
 const SellerLayout = () => {
 
-    const { axios, navigate } = useAppContext();
+    const { axios, navigate, setIsSeller } = useAppContext();
 
     const sidebarLinks = [
         { name: "Add Product", path: "/seller", icon: assets.add_icon},
@@ -20,6 +20,7 @@ const SellerLayout = () => {
            const {data} = await axios.get('/api/seller/logout') 
            if(data.success){
                localStorage.removeItem('sellerToken')
+               setIsSeller(false) 
                toast.success(data.message)
                navigate('/')
            }else{

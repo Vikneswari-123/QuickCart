@@ -6,6 +6,6 @@ import { updateCart } from "../controllers/cartController.js";
 const cartRouter = express.Router();
 
 cartRouter.post('/update', authUser, updateCart)
-cartRouter.get('/get', authUser, updateCart)
+
 
 export default cartRouter;

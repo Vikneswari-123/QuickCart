@@ -29,8 +29,6 @@ const Cart = () => {
                 setAddresses(data.addresses)
                 if(data.addresses.length > 0){
                     setSelectedAddress(data.addresses[0])
-                }else{
-                    toast.error(data.message)
                 }
             }
         } catch (error) {
@@ -59,7 +57,7 @@ const Cart = () => {
                 }
             }else{
                 // Place Order with Stripe
-                const {data}= await axios.post('/api/order/stripe',{
+                const {data}= await axios.post('/api/order/stripe-checkout', {
                     userId: user._id,
                     items: cartArray.map(item=> ({product: item._id, quantity: item.quantity})),
                     address: selectedAddress._id
