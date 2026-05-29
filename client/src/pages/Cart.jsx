@@ -41,6 +41,10 @@ const Cart = () => {
             if(!selectedAddress){
                 return toast.error("Please select an address")
             }
+
+            if (paymentOption === "Online" && getCartAmount() < 50) {
+            return toast.error("Minimum order amount for online payment is ₹50")
+           }
             // Place Order with COD
             if(paymentOption === "COD"){
                 const {data}= await axios.post('/api/order/cod',{
@@ -188,6 +192,12 @@ const Cart = () => {
                         <span>Total Amount:</span><span>{currency}{getCartAmount() + getCartAmount() * 2 / 100}</span>
                     </p>
                 </div>
+
+                {paymentOption === "Online" && getCartAmount() < 50 && (
+                    <p className="text-red-500 text-xs mt-2">
+                        ⚠️ Minimum ₹50 required for online payment
+                    </p>
+                )}
 
                 <button onClick={placeOrder} className="w-full py-3 mt-6 cursor-pointer bg-primary text-white font-medium hover:bg-indigo-600 transition">
                     {paymentOption === "COD" ? "Place Order" : "Proceed to Checkout"}
