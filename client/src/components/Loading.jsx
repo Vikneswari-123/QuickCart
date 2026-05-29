@@ -5,7 +5,7 @@ import { useEffect } from 'react'
 
 const Loading = () => {
 
-    const {navigate} = useAppContext()
+    const {navigate, setCartItems } = useAppContext()
     let {search} = useLocation()
     const query = new URLSearchParams(search)
     const nextUrl = query.get('next');
@@ -16,6 +16,7 @@ const Loading = () => {
 
     useEffect(()=>{
         if(nextUrl){
+            setCartItems({})
             setTimeout(()=>{
                 navigate(`/${nextUrl}`)
             },5000)
